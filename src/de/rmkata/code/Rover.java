@@ -1,16 +1,19 @@
 package de.rmkata.code;
 
 
+
 public class Rover {
 	
 	private Direction direction;
 	private int posX;
 	private int posY;
+	private Planet planet;
 	
-	public Rover(int x, int y, Direction dir) {
+	public Rover(Planet pl, int x, int y, Direction dir) {
 		posX = x;
 		posY = y;
 		direction = dir;
+		planet = pl;
 	}
 	
 	public int getPosX() {
@@ -33,16 +36,18 @@ public class Rover {
 		posY = y;
 	}
 	
-	public void receiveCommands(String[] commands) {
-		for(int i = 0; i < commands.length; i++) {
-			if(commands[i].equals("f") || commands[i].equals("b") || commands[i].equals("r") || commands[i].equals("l")) {
-				doCommand(commands[i]);
+	public Obstacle receiveCommands(String commands) {
+		for(int i = 0; i < commands.length(); i++) {
+			Character c = commands.charAt(i);
+			if(c.equals('f') || c.equals('b') || c.equals('r') || c.equals('l')) {
+				doCommand(c);
 			}
-		}	
+		}
+		return null;
 	}
 	
-	public void doCommand(String command) {
-		if(command.equals("f")) {
+	public void doCommand(Character command) {
+		if(command.equals('f')) {
 			if(direction.equals(Direction.NORTH)) {  //Hier kann man noch sehr gut refactoren
 				if(posY == 99) posY = 0;
 				else posY++;
@@ -60,7 +65,7 @@ public class Rover {
 				else posX++;
 			}
 		}
-		else if(command.equals("b")) {
+		else if(command.equals('b')) {
 			if(direction.equals(Direction.NORTH)) {
 				if(posY == 0) posY = 99;
 				else posY--;
@@ -78,33 +83,11 @@ public class Rover {
 				else posX++;
 			}
 		}
-		else if(command.equals("r")) {
-			if(direction.equals(Direction.NORTH)) {
-				direction = Direction.EAST;
-			}
-			else if(direction.equals(Direction.EAST)) {
-				direction = Direction.SOUTH;
-			}
-			else if(direction.equals(Direction.SOUTH)) {
-				direction = Direction.WEST;
-			}
-			else if(direction.equals(Direction.WEST)) {
-				direction = Direction.NORTH;
-			}
+		else if(command.equals('r')) {
+			direction = Direction.directionToTheRight(direction);
 		}
-		else if(command.equals("l")) {
-			if(direction.equals(Direction.NORTH)) {
-				direction = Direction.WEST;
-			}
-			else if(direction.equals(Direction.EAST)) {
-				direction = Direction.NORTH;
-			}
-			else if(direction.equals(Direction.SOUTH)) {
-				direction = Direction.EAST;
-			}
-			else if(direction.equals(Direction.WEST)) {
-				direction = Direction.SOUTH;
-			}
+		else if(command.equals('l')) {
+			direction = Direction.directionToTheLeft(direction);
 		}
 	}
 
