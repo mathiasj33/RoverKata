@@ -1,6 +1,5 @@
 package de.rmkata.code;
 
-import java.util.ArrayList;
 
 
 
@@ -39,15 +38,14 @@ public class Rover {
 	}
 	
 	public Obstacle receiveCommands(String commands) {
-		ArrayList<Obstacle> obstacles = new ArrayList<Obstacle>();
 		for(int i = 0; i < commands.length(); i++) {
 			Character c = commands.charAt(i);
 			if(c.equals('f') || c.equals('b') || c.equals('r') || c.equals('l')) {
-				obstacles.add(doCommand(c));
+				Obstacle o = doCommand(c);
+				if(o != null) {
+					return o;
+				}
 			}
-		}
-		for(Obstacle o:obstacles) {
-			if(o != null) return o;  //Evtl. überschreiben, dass die null-obstacles nicht hinzugefügt werden
 		}
 		return null;
 	}

@@ -88,6 +88,18 @@ public class TestRover {
 		Assert.assertEquals(38,rover2.getPosY());
 		Assert.assertEquals(49,rover2.getPosX());
 	}
+	
+	@Test
+	public void testDetectObstacleWhileDriving() {
+		Planet mars = new Planet("Mars",100,100);
+		mars.addObstacle(2, 2);
+		rover = new Rover(mars,0,0,Direction.NORTH);
+		Obstacle o = rover.receiveCommands("ffrfflf");  //Jetzt soll das Hinderniss während dem Fahren entdeckt werden
+		Assert.assertTrue(o != null);
+		Assert.assertEquals(2, o.getPosX());
+		Assert.assertEquals(2, rover.getPosY());
+		Assert.assertEquals(1, rover.getPosX());
+	}
 
 }
 
