@@ -1,5 +1,7 @@
 package de.rmkata.code;
 
+import java.util.ArrayList;
+
 
 
 public class Rover {
@@ -37,58 +39,91 @@ public class Rover {
 	}
 	
 	public Obstacle receiveCommands(String commands) {
+		ArrayList<Obstacle> obstacles = new ArrayList<Obstacle>();
 		for(int i = 0; i < commands.length(); i++) {
 			Character c = commands.charAt(i);
 			if(c.equals('f') || c.equals('b') || c.equals('r') || c.equals('l')) {
-				doCommand(c);
+				obstacles.add(doCommand(c));
 			}
+		}
+		for(Obstacle o:obstacles) {
+			if(o != null) return o;  //Evtl. überschreiben, dass die null-obstacles nicht hinzugefügt werden
 		}
 		return null;
 	}
 	
-	public void doCommand(Character command) {
+	public Obstacle doCommand(Character command) {
 		if(command.equals('f')) {
-			if(direction.equals(Direction.NORTH)) {  //Hier kann man noch sehr gut refactoren
-				if(posY == 99) posY = 0;
+			if(direction.equals(Direction.NORTH)) {  //Hier kann man noch refactoren
+				if(posY == planet.getHeight() - 1) posY = 0;
+				else if(planet.isObstacleAt(posX, posY + 1)) {
+					return planet.getObstacleAt(posX, posY + 1);
+				}
 				else posY++;
 			}
 			else if(direction.equals(Direction.EAST)) {
-				if(posX == 99) posX = 0;
+				if(posX == planet.getWidth() - 1) posX = 0;
+				else if(planet.isObstacleAt(posX + 1, posY)) {
+					return planet.getObstacleAt(posX + 1, posY);
+				}
 				else posX++;
 			}
 			else if(direction.equals(Direction.SOUTH)) {
-				if(posY == 0) posY = 99;
+				if(posY == 0) posY = planet.getHeight() - 1;
+				else if(planet.isObstacleAt(posX, posY - 1)) {
+					return planet.getObstacleAt(posX, posY - 1);
+				}
 				else posY--;
 			}
 			else if(direction.equals(Direction.WEST)) {
-				if(posX == 0) posX = 99;
-				else posX++;
+				if(posX == 0) posX = planet.getWidth() - 1;
+				else if(planet.isObstacleAt(posX - 1, posY)) {
+					return planet.getObstacleAt(posX - 1, posY);
+				}
+				else posX--;
 			}
+			return null;
 		}
 		else if(command.equals('b')) {
 			if(direction.equals(Direction.NORTH)) {
-				if(posY == 0) posY = 99;
+				if(posY == 0) posY = planet.getHeight() - 1;
+				else if(planet.isObstacleAt(posX, posY - 1)) {
+					return planet.getObstacleAt(posX, posY - 1);
+				}
 				else posY--;
 			}
 			else if(direction.equals(Direction.EAST)) {
-				if(posX == 0) posX = 99;
+				if(posX == 0) posX = planet.getWidth() - 1;
+				else if(planet.isObstacleAt(posX - 1, posY)) {
+					return planet.getObstacleAt(posX - 1, posY);
+				}
 				else posX--;
 			}
 			else if(direction.equals(Direction.SOUTH)) {
-				if(posY == 99) posY = 0;
+				if(posY == planet.getHeight() - 1) posY = 0;
+				else if(planet.isObstacleAt(posX, posY + 1)) {
+					return planet.getObstacleAt(posX, posY + 1);
+				}
 				else posY++;
 			}
 			else if(direction.equals(Direction.WEST)) {
-				if(posX == 99) posX = 0;
+				if(posX == planet.getWidth() - 1) posX = 0;
+				else if(planet.isObstacleAt(posX + 1, posY)) {
+					return planet.getObstacleAt(posX + 1, posY);
+				}
 				else posX++;
 			}
+			return null;
 		}
 		else if(command.equals('r')) {
 			direction = Direction.directionToTheRight(direction);
+			return null;
 		}
 		else if(command.equals('l')) {
 			direction = Direction.directionToTheLeft(direction);
+			return null;
 		}
+		return null;
 	}
 
 }

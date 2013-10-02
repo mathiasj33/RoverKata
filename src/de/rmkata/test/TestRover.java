@@ -1,6 +1,5 @@
 package de.rmkata.test;
 
-import static org.mockito.Mockito.*;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -46,15 +45,36 @@ public class TestRover {
 	}
 	
 	@Test
+	public void testDriveAroundPlanet() {
+		rover.receiveCommands("b");
+		Assert.assertEquals(99, rover.getPosY());
+		rover.receiveCommands("f");
+		Assert.assertEquals(0, rover.getPosY());
+		rover.receiveCommands("lf");
+		Assert.assertEquals(99, rover.getPosX());
+		rover.receiveCommands("b");
+		Assert.assertEquals(0, rover.getPosX());
+	}
+	
+	@Test
 	public void testExample() {
 		rover.receiveCommands("ffrff");
-		Assert.assertEquals(2, rover.getPosX());
 		Assert.assertEquals(2, rover.getPosY());
+		Assert.assertEquals(2, rover.getPosX());
+	}
+	
+	@Test
+	public void testPlanet() {
+		Planet pluto = new Planet("Pluto",5,5);
+		rover = new Rover(pluto,0,0,Direction.NORTH);
+		rover.receiveCommands("ffrfffff");
+		Assert.assertEquals(2, rover.getPosY());
+		Assert.assertEquals(0, rover.getPosX());
 	}
 
 	@Test
 	public void testExample2WithObstacles() {
-		Planet venus = new Planet("Venus",50,40); // der Rover soll auf Planeten beliebiger Groesse fahren können
+		Planet venus = new Planet("Venus",50,40); // der Rover soll auf Planeten beliebiger Größe fahren können
 		venus.addObstacle(48,38);
 		Rover rover2 = new Rover(venus,0,0,Direction.NORTH);
 		Obstacle obstacle = rover2.receiveCommands("bblf");

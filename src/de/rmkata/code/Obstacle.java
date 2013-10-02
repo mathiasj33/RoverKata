@@ -1,15 +1,21 @@
 package de.rmkata.code;
 
 public class Obstacle {
-
-	public Object getPosX() {
-		// TODO Auto-generated method stub
-		return null;
+	
+	private int posX;
+	private int posY;
+	
+	public Obstacle(int i, int j) {
+		posX = i;
+		posY = j;
 	}
 
-	public Object getPosY() {
-		// TODO Auto-generated method stub
-		return null;
+	public int getPosX() {
+		return posX;
+	}
+
+	public int getPosY() {
+		return posY;
 	}
 
 }
