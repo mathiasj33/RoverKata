@@ -2,20 +2,14 @@ package de.rmkata.code;
 
 public class Obstacle {
 	
-	private int posX;
-	private int posY;
+	private Pos pos;
 	
-	public Obstacle(int i, int j) {
-		posX = i;
-		posY = j;
+	public Obstacle(Pos p) {
+		pos = p;
 	}
-
-	public int getPosX() {
-		return posX;
-	}
-
-	public int getPosY() {
-		return posY;
+	
+	public Pos getPosition() {
+		return pos;
 	}
 
 }

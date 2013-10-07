@@ -15,8 +15,8 @@ public class Planet {
 		height = j;
 	}
 
-	public void addObstacle(int i, int j) {
-		obstacles.add(new Obstacle(i,j));
+	public void addObstacle(Pos p) {
+		obstacles.add(new Obstacle(p));
 	}
 	
 	public int getHeight() {
@@ -27,22 +27,30 @@ public class Planet {
 		return width;
 	}
 	
-	public boolean isObstacleAt(int x, int y) {
+	public boolean isObstacleAt(Pos p) {
 		for(Obstacle o:obstacles) {
-			if(o.getPosX() == x && o.getPosY() == y) {
+			if(o.getPosition().equals(p)) {
 				return true;
 			}
 		}
 		return false;
 	}
 	
-	public Obstacle getObstacleAt(int x, int y) {
+	public Obstacle getObstacleAt(Pos p) {
 		for(Obstacle o:obstacles) {
-			if(o.getPosX() == x && o.getPosY() == y) {
+			if(o.getPosition().equals(p)) {
 				return o;
 			}
 		}
 		return null;
+	}
+	
+	public ArrayList<Obstacle> getObstacles() {
+		return obstacles;
+	}
+	
+	public String getName() {
+		return name;
 	}
 
 }

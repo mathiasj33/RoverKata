@@ -1,127 +1,125 @@
 package de.rmkata.code;
 
+import java.util.ArrayList;
+
 
 
 
 public class Rover {
 	
 	private Direction direction;
-	private int posX;
-	private int posY;
+	private Pos position;
 	private Planet planet;
+	private ArrayList<Pos> vectors;
 	
-	public Rover(Planet pl, int x, int y, Direction dir) {
-		posX = x;
-		posY = y;
+	public Rover(Planet pl, Pos pos, Direction dir) {
+		position = pos;
 		direction = dir;
 		planet = pl;
 	}
 	
-	public int getPosX() {
-		return posX;
+	public Pos getPosition() {
+		return position;
 	}
 	
-	public int getPosY() {
-		return posY;
+	public void setPosition(Pos pos) {
+		position = pos;
 	}
 	
 	public Direction getDirection() {
 		return direction;
 	}
 	
-	public void setPosX(int x) {
-		posX = x;
-	}
-	
-	public void setPosY(int y) {
-		posY = y;
-	}
-	
-	public Obstacle receiveCommands(String commands) {
+	/*public Obstacle receiveCommands(String commands) {
+		vectors = new ArrayList<Pos>();
 		for(int i = 0; i < commands.length(); i++) {
 			Character c = commands.charAt(i);
 			if(c.equals('f') || c.equals('b') || c.equals('r') || c.equals('l')) {
-				Obstacle o = doCommand(c);
-				if(o != null) {
+				doCommand(c);
+			}
+		}
+		for(Pos p : vectors) {
+			Pos savePosition = position;  //Das hier ist ein Speicher für die Position bevor die Vektoren addiert werden
+			position.setX(position.getX() + p.getX());  //Vektoraddition
+			position.setY(position.getY() + p.getY());
+			if(position.getX() > planet.getWidth()) position.setX(0);//Hier vielleicht noch mit % arbeiten
+			else if(position.getX() < 0) position.setX(planet.getWidth());
+			else if(position.getY() > planet.getHeight()) position.setY(0);
+			else if(position.getY() < 0) position.setY(planet.getHeight());
+			System.out.println("Position: " + position);
+			System.out.println("SavePosition: " + savePosition);
+			for(Obstacle o : planet.getObstacles()) {
+				if(o.getPosition().equals(position)) {
+					System.out.println(savePosition);
+					position = savePosition;
 					return o;
 				}
 			}
 		}
 		return null;
+	} */
+	
+	public Obstacle receiveCommands(String commands) {
+		vectors = new ArrayList<Pos>();
+		for(int i = 0; i < commands.length(); i++) {
+			Character c = commands.charAt(i);
+			if(c.equals('f') || c.equals('b')) {
+				doCommand(c);
+				position.setX(position.getX() + vectors.get(vectors.size() - 1).getX());
+				position.setY(position.getY() + vectors.get(vectors.size() - 1).getY());
+				if(position.getX() > planet.getWidth()) position.setX(0);  //Hier vielleicht noch mit % arbeiten
+				else if(position.getX() < 0) position.setX(planet.getWidth());
+				else if(position.getY() > planet.getHeight()) position.setY(0);
+				else if(position.getY() < 0) position.setY(planet.getHeight());
+				for(Obstacle o : planet.getObstacles()) {
+					if(o.getPosition().equals(position)) {
+						receiveCommands("b");  //Sonst würde der Rover im Obstacle stehen bleiben
+						return o;
+					}
+				}
+			}
+			else if(c.equals('r') || c.equals('l')) {
+				doCommand(c);
+			}
+		}
+		return null;
 	}
 	
-	public Obstacle doCommand(Character command) {
+	private void doCommand(Character command) {
 		if(command.equals('f')) {
-			if(direction.equals(Direction.NORTH)) {  //Hier kann man noch refactoren
-				if(posY == planet.getHeight() - 1) posY = 0;
-				else if(planet.isObstacleAt(posX, posY + 1)) {
-					return planet.getObstacleAt(posX, posY + 1);
-				}
-				else posY++;
+			if(direction.equals(Direction.NORTH)) {
+				vectors.add(new Pos(0, 1));
 			}
 			else if(direction.equals(Direction.EAST)) {
-				if(posX == planet.getWidth() - 1) posX = 0;
-				else if(planet.isObstacleAt(posX + 1, posY)) {
-					return planet.getObstacleAt(posX + 1, posY);
-				}
-				else posX++;
+				vectors.add(new Pos(1, 0));
 			}
 			else if(direction.equals(Direction.SOUTH)) {
-				if(posY == 0) posY = planet.getHeight() - 1;
-				else if(planet.isObstacleAt(posX, posY - 1)) {
-					return planet.getObstacleAt(posX, posY - 1);
-				}
-				else posY--;
+				vectors.add(new Pos(0, -1));
 			}
 			else if(direction.equals(Direction.WEST)) {
-				if(posX == 0) posX = planet.getWidth() - 1;
-				else if(planet.isObstacleAt(posX - 1, posY)) {
-					return planet.getObstacleAt(posX - 1, posY);
-				}
-				else posX--;
+				vectors.add(new Pos(-1, 0));
 			}
-			return null;
 		}
 		else if(command.equals('b')) {
 			if(direction.equals(Direction.NORTH)) {
-				if(posY == 0) posY = planet.getHeight() - 1;
-				else if(planet.isObstacleAt(posX, posY - 1)) {
-					return planet.getObstacleAt(posX, posY - 1);
-				}
-				else posY--;
+				vectors.add(new Pos(0,  - 1));
 			}
 			else if(direction.equals(Direction.EAST)) {
-				if(posX == 0) posX = planet.getWidth() - 1;
-				else if(planet.isObstacleAt(posX - 1, posY)) {
-					return planet.getObstacleAt(posX - 1, posY);
-				}
-				else posX--;
+				vectors.add(new Pos(- 1, 0));
 			}
 			else if(direction.equals(Direction.SOUTH)) {
-				if(posY == planet.getHeight() - 1) posY = 0;
-				else if(planet.isObstacleAt(posX, posY + 1)) {
-					return planet.getObstacleAt(posX, posY + 1);
-				}
-				else posY++;
+				vectors.add(new Pos(0, 1));
 			}
 			else if(direction.equals(Direction.WEST)) {
-				if(posX == planet.getWidth() - 1) posX = 0;
-				else if(planet.isObstacleAt(posX + 1, posY)) {
-					return planet.getObstacleAt(posX + 1, posY);
-				}
-				else posX++;
+				vectors.add(new Pos( 1, 0));
 			}
-			return null;
 		}
 		else if(command.equals('r')) {
 			direction = Direction.directionToTheRight(direction);
-			return null;
 		}
 		else if(command.equals('l')) {
 			direction = Direction.directionToTheLeft(direction);
-			return null;
 		}
-		return null;
 	}
 
 }
