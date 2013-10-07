@@ -1,18 +1,25 @@
 package de.rmkata.code;
 
 public enum Direction {
-	NORTH(0),
-	EAST(1),
-	SOUTH(2),
-	WEST(3);
+	NORTH(0, new Pos(0,1)),
+	EAST(1, new Pos(1,0)),
+	SOUTH(2, new Pos(0,-1)),
+	WEST(3, new Pos(-1,0));
 	
 	final private int value;
+	final private Pos pos;
 	
-	private Direction(int v)
-	{ value = v; }
+	private Direction(int v, Pos pos){ 
+		this.value = v;
+		this.pos = pos;
+	}
 	
 	public int getValue() {
 		return value;
+	}
+	
+	public Pos getPos() {
+		return pos;
 	}
 
 	public static Direction getDirection(int val) {

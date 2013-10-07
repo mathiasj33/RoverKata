@@ -51,8 +51,24 @@ public class Pos {
 		this.y = y;
 	}
 	
+	
 	public String toString() {
 		return(Integer.toString(x) + " " + Integer.toString(y));
+	}
+
+	public static Pos add(Pos summand1, Pos summand2) {
+		return new Pos(summand1.getX()+summand2.getX(),summand1.getY()+summand2.getY());
+	}
+
+	public static Pos addModulo(Pos summand1, Pos summand2, int modX, int modY) {
+		Pos posHelp = add(summand1,summand2);
+		// a mod b = ( a % b + b) % b
+		return new Pos((posHelp.getX() % modX + modX)%modX, (posHelp.getY() % modY + modY)%modY);
+	}
+
+	public static Pos subtrModulo(Pos minuend, Pos subtrahend, int modX, int modY) {
+		Pos posHelp = new Pos(-subtrahend.getX(),-subtrahend.getY());
+		return addModulo(minuend,posHelp,modX,modY);
 	}
 
 }

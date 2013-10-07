@@ -87,7 +87,8 @@ public class Rover {
 	
 	private void doCommand(Character command) {
 		if(command.equals('f')) {
-			if(direction.equals(Direction.NORTH)) {
+			vectors.add(direction.getPos());
+/*			if(direction.equals(Direction.NORTH)) {
 				vectors.add(new Pos(0, 1));
 			}
 			else if(direction.equals(Direction.EAST)) {
@@ -99,9 +100,10 @@ public class Rover {
 			else if(direction.equals(Direction.WEST)) {
 				vectors.add(new Pos(-1, 0));
 			}
-		}
+*/		}
 		else if(command.equals('b')) {
-			if(direction.equals(Direction.NORTH)) {
+			vectors.add(new Pos(-direction.getPos().getX(),-direction.getPos().getY()));
+/*			if(direction.equals(Direction.NORTH)) {
 				vectors.add(new Pos(0,  - 1));
 			}
 			else if(direction.equals(Direction.EAST)) {
@@ -113,7 +115,7 @@ public class Rover {
 			else if(direction.equals(Direction.WEST)) {
 				vectors.add(new Pos( 1, 0));
 			}
-		}
+*/		}
 		else if(command.equals('r')) {
 			direction = Direction.directionToTheRight(direction);
 		}
