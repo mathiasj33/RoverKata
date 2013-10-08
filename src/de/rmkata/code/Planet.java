@@ -27,15 +27,7 @@ public class Planet {
 		return width;
 	}
 	
-	public boolean isObstacleAt(Pos p) {
-		for(Obstacle o:obstacles) {
-			if(o.getPosition().equals(p)) {
-				return true;
-			}
-		}
-		return false;
-	}
-	
+
 	public Obstacle getObstacleAt(Pos p) {
 		for(Obstacle o:obstacles) {
 			if(o.getPosition().equals(p)) {

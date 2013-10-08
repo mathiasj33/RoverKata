@@ -30,7 +30,7 @@ public class TestRover {
 	public void testBackward() {
 		rover.receiveCommands("b");
 		Assert.assertEquals(0, rover.getPosition().getX());
-		Assert.assertEquals(100, rover.getPosition().getY());
+		Assert.assertEquals(99, rover.getPosition().getY());
 	}
 	
 	@Test
@@ -48,11 +48,11 @@ public class TestRover {
 	@Test
 	public void testDriveAroundPlanet() {
 		rover.receiveCommands("b");
-		Assert.assertEquals(100, rover.getPosition().getY());
+		Assert.assertEquals(99, rover.getPosition().getY());
 		rover.receiveCommands("f");
 		Assert.assertEquals(0, rover.getPosition().getY());
 		rover.receiveCommands("lf");
-		Assert.assertEquals(100, rover.getPosition().getX());
+		Assert.assertEquals(99, rover.getPosition().getX());
 		rover.receiveCommands("b");
 		Assert.assertEquals(0, rover.getPosition().getX());
 	}
@@ -70,7 +70,7 @@ public class TestRover {
 		rover = new Rover(pluto,new Pos(0,0),Direction.NORTH);
 		rover.receiveCommands("ffrffffff");
 		Assert.assertEquals(2, rover.getPosition().getY());
-		Assert.assertEquals(0, rover.getPosition().getX());
+		Assert.assertEquals(1, rover.getPosition().getX());
 	}
 	
 	@Test
@@ -81,7 +81,7 @@ public class TestRover {
 		rover.receiveCommands("l");
 		Assert.assertEquals(Direction.WEST, rover.getDirection());
 		rover.receiveCommands("f");
-		Assert.assertEquals(new Pos(5,0), rover.getPosition());
+		Assert.assertEquals(new Pos(4,0), rover.getPosition());
 		Assert.assertEquals(Direction.WEST, rover.getDirection());
 	}
 

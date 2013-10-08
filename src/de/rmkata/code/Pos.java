@@ -62,8 +62,6 @@ public class Pos {
 
 	public static Pos addModulo(Pos summand1, Pos summand2, int modX, int modY) {
 		Pos posHelp = add(summand1,summand2);
-		modX = modX + 1;
-		modY = modY + 1;
 		// a mod b = ( a % b + b) % b  Um zu prüfen, ob die Zahl größer als der Planet ist
 		return new Pos((posHelp.getX() % modX + modX)%modX, (posHelp.getY() % modY + modY)%modY);
 	}
@@ -71,6 +69,10 @@ public class Pos {
 	public static Pos subtrModulo(Pos minuend, Pos subtrahend, int modX, int modY) {
 		Pos posHelp = new Pos(-subtrahend.getX(),-subtrahend.getY());
 		return addModulo(minuend,posHelp,modX,modY);
+	}
+	
+	public static Pos getNegative(Pos pos){
+		return new Pos(-pos.getX(),-pos.getY());
 	}
 
 }
