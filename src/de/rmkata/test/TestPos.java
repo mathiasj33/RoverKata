@@ -28,7 +28,7 @@ public class TestPos {
 		Pos summand1 = new Pos(2,1);
 		Pos summand2 = new Pos(-3,11);
 		Pos summeModulo = Pos.addModulo(summand1,summand2,8,10);
-		Assert.assertEquals(new Pos(7,2), summeModulo);
+		Assert.assertEquals(new Pos(8,1), summeModulo);
 	}
 	
 	@Test
@@ -36,7 +36,7 @@ public class TestPos {
 		Pos minuend = new Pos(2,1);
 		Pos subtrahend = new Pos(3,-11);
 		Pos diffModulo = Pos.subtrModulo(minuend,subtrahend,8,10);
-		Assert.assertEquals(new Pos(7,2), diffModulo);
+		Assert.assertEquals(new Pos(8,1), diffModulo);
 	}
 	
 	

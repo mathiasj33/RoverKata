@@ -30,44 +30,16 @@ public class Rover {
 		return direction;
 	}
 	
-	/*public Obstacle receiveCommands(String commands) {
-		vectors = new ArrayList<Pos>();
-		for(int i = 0; i < commands.length(); i++) {
-			Character c = commands.charAt(i);
-			if(c.equals('f') || c.equals('b') || c.equals('r') || c.equals('l')) {
-				doCommand(c);
-			}
-		}
-		for(Pos p : vectors) {
-			Pos savePosition = position;  //Das hier ist ein Speicher für die Position bevor die Vektoren addiert werden
-			position.setX(position.getX() + p.getX());  //Vektoraddition
-			position.setY(position.getY() + p.getY());
-			if(position.getX() > planet.getWidth()) position.setX(0);//Hier vielleicht noch mit % arbeiten
-			else if(position.getX() < 0) position.setX(planet.getWidth());
-			else if(position.getY() > planet.getHeight()) position.setY(0);
-			else if(position.getY() < 0) position.setY(planet.getHeight());
-			System.out.println("Position: " + position);
-			System.out.println("SavePosition: " + savePosition);
-			for(Obstacle o : planet.getObstacles()) {
-				if(o.getPosition().equals(position)) {
-					System.out.println(savePosition);
-					position = savePosition;
-					return o;
-				}
-			}
-		}
-		return null;
-	} */
-	
 	public Obstacle receiveCommands(String commands) {
 		vectors = new ArrayList<Pos>();
 		for(int i = 0; i < commands.length(); i++) {
 			Character c = commands.charAt(i);
 			if(c.equals('f') || c.equals('b')) {
 				doCommand(c);
+				/*
 				position.setX(position.getX() + vectors.get(vectors.size() - 1).getX());
 				position.setY(position.getY() + vectors.get(vectors.size() - 1).getY());
-				if(position.getX() > planet.getWidth()) position.setX(0);  //Hier vielleicht noch mit % arbeiten
+				if(position.getX() > planet.getWidth()) position.setX(0);
 				else if(position.getX() < 0) position.setX(planet.getWidth());
 				else if(position.getY() > planet.getHeight()) position.setY(0);
 				else if(position.getY() < 0) position.setY(planet.getHeight());
@@ -76,7 +48,26 @@ public class Rover {
 						receiveCommands("b");  //Sonst würde der Rover im Obstacle stehen bleiben
 						return o;
 					}
+				} */
+				if(vectors.size() == 1) {
+					Pos tryPosition = Pos.addModulo(vectors.get(0), position, planet.getWidth(), planet.getHeight());
+					for(Obstacle o : planet.getObstacles()) {
+						if(o.getPosition().equals(tryPosition)) {
+							return o;
+						}
+					}
+					position = tryPosition;
 				}
+				else {
+					Pos tryPosition = Pos.addModulo(vectors.get(vectors.size() - 1), vectors.get(vectors.size() - 2), planet.getWidth(), planet.getHeight());
+					for(Obstacle o : planet.getObstacles()) {
+						if(o.getPosition().equals(tryPosition)) {
+							return o;
+						}
+					}
+					position = tryPosition;
+				}
+				vectors.add(position);
 			}
 			else if(c.equals('r') || c.equals('l')) {
 				doCommand(c);
